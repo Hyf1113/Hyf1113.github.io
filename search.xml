@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>航空航天典型零部件电镀工艺虚拟仿真</title>
+      <link href="/2026/11/18/%E8%88%AA%E7%A9%BA%E8%88%AA%E5%A4%A9%E5%85%B8%E5%9E%8B%E9%9B%B6%E9%83%A8%E4%BB%B6%E7%94%B5%E9%95%80%E5%B7%A5%E8%89%BA%E8%99%9A%E6%8B%9F%E4%BB%BF%E7%9C%9F/"/>
+      <url>/2026/11/18/%E8%88%AA%E7%A9%BA%E8%88%AA%E5%A4%A9%E5%85%B8%E5%9E%8B%E9%9B%B6%E9%83%A8%E4%BB%B6%E7%94%B5%E9%95%80%E5%B7%A5%E8%89%BA%E8%99%9A%E6%8B%9F%E4%BB%BF%E7%9C%9F/</url>
+      
+        <content type="html"><![CDATA[<p>基于 Unity WebGL 开发的“航空航天典型零部件电镀工艺虚拟仿真实验”，面向航空航天领域典型零部件的表面处理工艺，把电镀流程做成可在浏览器中直接运行的三维交互仿真，无需安装客户端。</p><p>实验包含镀液组分与传质建模、电场分布数值求解、镀层厚度均匀性预测三个模块，可调节主盐浓度、电流密度、镀液温度等工艺参数并观察镀层变化，另附工艺知识测验与实验报告模板。</p><p>在线体验：<a href="https://hyf1113.github.io/Aerospace/">链接地址</a></p><p>预览图：<img src="/2026/11/18/%E8%88%AA%E7%A9%BA%E8%88%AA%E5%A4%A9%E5%85%B8%E5%9E%8B%E9%9B%B6%E9%83%A8%E4%BB%B6%E7%94%B5%E9%95%80%E5%B7%A5%E8%89%BA%E8%99%9A%E6%8B%9F%E4%BB%BF%E7%9C%9F/Logo.png" alt="预览图"></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>在RawImage上鼠标点在屏幕上发生偏移的问题</title>
       <link href="/2024/03/09/%E5%9C%A8RawImage%E4%B8%8A%E9%BC%A0%E6%A0%87%E7%82%B9%E5%9C%A8%E5%B1%8F%E5%B9%95%E4%B8%8A%E5%8F%91%E7%94%9F%E5%81%8F%E7%A7%BB%E7%9A%84%E9%97%AE%E9%A2%98/"/>
       <url>/2024/03/09/%E5%9C%A8RawImage%E4%B8%8A%E9%BC%A0%E6%A0%87%E7%82%B9%E5%9C%A8%E5%B1%8F%E5%B9%95%E4%B8%8A%E5%8F%91%E7%94%9F%E5%81%8F%E7%A7%BB%E7%9A%84%E9%97%AE%E9%A2%98/</url>
@@ -30,11 +43,11 @@
     
     
     <entry>
-      <title>AR展示项目</title>
-      <link href="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/"/>
-      <url>/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/</url>
+      <title>作品展示</title>
+      <link href="/2024/03/06/%E4%BD%9C%E5%93%81%E9%93%BE%E6%8E%A5/"/>
+      <url>/2024/03/06/%E4%BD%9C%E5%93%81%E9%93%BE%E6%8E%A5/</url>
       
-        <content type="html"><![CDATA[<p>安卓APK下载：<a href="https://pan.baidu.com/s/1seyMnK0jVEzfR9c_wo0pCA?pwd=05sm">APK下载</a><br>模型示例图片：<img src="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/BaChongShenZi.png" alt="图片1"><br><img src="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/DiAoNa.png" alt="图片2"><br><img src="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/FeiXieEr.png" alt="图片3"><br><img src="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/TuoMa.png" alt="图片4"></p>]]></content>
+        <content type="html"><![CDATA[<p>视频合集项目：<a href="https://hyf1113.github.io/VideosCollections/">链接地址</a></p><p>AR展示项目：<a href="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/">链接地址</a></p><p>编辑器：<a href="/2024/03/07/%E7%BC%96%E8%BE%91%E5%99%A8/">链接地址</a></p><p>航空航天典型零部件电镀工艺虚拟仿真：<a href="/2026/11/18/%E8%88%AA%E7%A9%BA%E8%88%AA%E5%A4%A9%E5%85%B8%E5%9E%8B%E9%9B%B6%E9%83%A8%E4%BB%B6%E7%94%B5%E9%95%80%E5%B7%A5%E8%89%BA%E8%99%9A%E6%8B%9F%E4%BB%BF%E7%9C%9F/">链接地址</a></p>]]></content>
       
       
       
@@ -43,11 +56,11 @@
     
     
     <entry>
-      <title>作品展示</title>
-      <link href="/2024/03/06/%E4%BD%9C%E5%93%81%E9%93%BE%E6%8E%A5/"/>
-      <url>/2024/03/06/%E4%BD%9C%E5%93%81%E9%93%BE%E6%8E%A5/</url>
+      <title>AR展示项目</title>
+      <link href="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/"/>
+      <url>/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/</url>
       
-        <content type="html"><![CDATA[<p>视频合集项目：<a href="https://hyf1113.github.io/VideosCollections/">链接地址</a></p><p>AR展示项目：<a href="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/">链接地址</a></p><p>编辑器：<a href="/2024/03/07/%E7%BC%96%E8%BE%91%E5%99%A8/">链接地址</a></p>]]></content>
+        <content type="html"><![CDATA[<p>安卓APK下载：<a href="https://pan.baidu.com/s/1seyMnK0jVEzfR9c_wo0pCA?pwd=05sm">APK下载</a><br>模型示例图片：<img src="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/BaChongShenZi.png" alt="图片1"><br><img src="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/DiAoNa.png" alt="图片2"><br><img src="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/FeiXieEr.png" alt="图片3"><br><img src="/2024/03/06/AR%E5%B1%95%E7%A4%BA%E9%A1%B9%E7%9B%AE/TuoMa.png" alt="图片4"></p>]]></content>
       
       
       
