@@ -1,0 +1,220 @@
+/* ===================== 页面基础 ===================== */
+html, body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background: #04101B;
+}
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+}
+
+/* ===================== Unity 画布 ===================== */
+#unity-container { position: absolute }
+#unity-container.unity-desktop { left: 50%; top: 50%; transform: translate(-50%, -50%) }
+#unity-container.unity-mobile { position: fixed; width: 100%; height: 100% }
+
+/* 画布铺满浏览器窗口：不再固定 1920×1080，避免小窗口下画面被裁切 */
+#unity-canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background: #04101B;
+}
+
+.unity-mobile #unity-canvas { width: 100%; height: 100% }
+
+/* ===================== 加载页（整屏设计稿 + 实时进度） ===================== */
+#unity-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: none;
+  background: #04101B;
+  transition: opacity 0.4s ease;
+}
+
+/* 加载完成后淡出 */
+#unity-loading-bar.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 舞台与画布保持同一横纵比：背景图与进度条都以它为基准等比缩放，任何窗口比例下都不错位 */
+.loading-stage__frame {
+  position: relative;
+  width: min(100vw, calc(100vh * 1920 / 1080));
+  height: min(100vh, calc(100vw * 1080 / 1920));
+  background: url("Logo.png") center / cover no-repeat;
+  container-type: size;
+}
+
+/* 进度区：位置与尺寸用 cqw 表示，随舞台宽度等比缩放 */
+.loading-progress {
+  position: absolute;
+  left: 50%;
+  top: 68.5%;
+  width: 21cqw;
+  transform: translateX(-50%);
+}
+
+/* 块状暗色衬底：压住背景机械细节，保证小字号文字可读 */
+.loading-progress::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -12%;
+  right: -12%;
+  bottom: -45%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(3, 14, 24, 0.55), rgba(3, 14, 24, 0));
+  pointer-events: none;
+}
+
+.loading-progress__label {
+  margin-bottom: 1cqw;
+  font-size: 0.68cqw;
+  letter-spacing: 0.28em;
+  color: rgba(160, 208, 232, 0.8);
+  text-shadow: 0 0 0.4cqw rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+
+.loading-progress__row {
+  display: flex;
+  align-items: center;
+}
+
+.loading-progress__track {
+  position: relative;
+  flex: 1;
+  height: 0.34cqw;
+  min-height: 3px;
+  border-radius: 999px;
+  background: rgba(150, 205, 235, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(140, 200, 235, 0.16);
+}
+
+/* 填充：青色渐变 + 外发光，模拟设计稿中的光带 */
+.loading-progress__fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #14618f 0%, #35b6ee 55%, #b9f2ff 100%);
+  box-shadow: 0 0 0.9cqw rgba(80, 200, 255, 0.45);
+  transition: width 0.15s linear;
+}
+
+/* 进度条头部的亮点 */
+.loading-progress__head {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 0.55cqw;
+  height: 0.55cqw;
+  min-width: 5px;
+  min-height: 5px;
+  border-radius: 50%;
+  background: #eaffff;
+  box-shadow: 0 0 1.2cqw rgba(130, 226, 255, 0.9), 0 0 0.25cqw #7fe2ff;
+  transform: translate(-50%, -50%);
+  transition: left 0.15s linear;
+}
+
+.loading-progress__percent {
+  margin-left: 1.1cqw;
+  font-size: 1cqw;
+  letter-spacing: 0.08em;
+  color: #cfefff;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 0.5cqw rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+}
+
+.loading-progress__hint {
+  margin-top: 0.75cqw;
+  font-size: 0.66cqw;
+  letter-spacing: 0.12em;
+  color: rgba(150, 196, 220, 0.7);
+  text-shadow: 0 0 0.4cqw rgba(0, 0, 0, 0.6);
+}
+
+/* ===================== 全屏提示遮罩 ===================== */
+#unity-fullscreen-hint {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 15;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 10, 18, 0.45);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+#unity-fullscreen-hint.is-visible {
+  display: flex;
+}
+
+.fullscreen-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2vh;
+  padding: 2.6vh 3.4vw;
+  border: 1px solid rgba(130, 210, 250, 0.35);
+  border-radius: 0.8vh;
+  background: rgba(4, 20, 32, 0.6);
+  box-shadow: 0 0 4vh rgba(40, 160, 220, 0.25);
+  text-align: center;
+}
+
+.fullscreen-hint__title {
+  font-size: clamp(16px, 1.7vw, 30px);
+  letter-spacing: 0.16em;
+  color: #dff4ff;
+  text-shadow: 0 0 1.2vh rgba(60, 170, 230, 0.45);
+}
+
+.fullscreen-hint__sub {
+  font-size: clamp(11px, 0.85vw, 15px);
+  letter-spacing: 0.12em;
+  color: rgba(160, 210, 235, 0.75);
+}
+
+/* ===================== 警告横幅 ===================== */
+#unity-warning {
+  position: fixed;
+  left: 50%;
+  top: 5%;
+  z-index: 20;
+  padding: 10px;
+  background: white;
+  color: #111;
+  transform: translateX(-50%);
+  display: none;
+}

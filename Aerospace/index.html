@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>航空航天典型零部件电镀工艺虚拟仿真实验</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+  </head>
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=1920 height=1080 tabindex="-1"></canvas>
+      <div id="unity-warning"> </div>
+    </div>
+
+    <!-- 加载页：TemplateData/Logo.png 作为整屏设计稿背景，叠加实时加载进度 -->
+    <div id="unity-loading-bar">
+      <div class="loading-stage">
+        <div class="loading-stage__frame">
+          <div class="loading-progress">
+            <div class="loading-progress__label">LOADING RESOURCES</div>
+            <div class="loading-progress__row">
+              <div class="loading-progress__track">
+                <div class="loading-progress__fill" id="unity-progress-bar-full"></div>
+                <div class="loading-progress__head" id="unity-progress-head"></div>
+              </div>
+              <div class="loading-progress__percent" id="unity-progress-percent">0%</div>
+            </div>
+            <div class="loading-progress__hint">正在加载实验环境资源</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 加载完成后的全屏提示遮罩：浅黑罩层，点击任意位置进入全屏 -->
+    <div id="unity-fullscreen-hint">
+      <div class="fullscreen-hint">
+        <div class="fullscreen-hint__title">点击任意位置进入全屏</div>
+        <div class="fullscreen-hint__sub">全屏后按 ESC 退出全屏</div>
+      </div>
+    </div>
+
+    <script>
+
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var progressHead = document.querySelector("#unity-progress-head");
+      var progressPercent = document.querySelector("#unity-progress-percent");
+      var fullscreenHint = document.querySelector("#unity-fullscreen-hint");
+      var warningBanner = document.querySelector("#unity-warning");
+      // 移动端浏览器全屏行为不一致，不显示全屏提示
+      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      // 游戏是否已加载完成；只有加载完成后才允许显示全屏提示
+      var hasLoaded = false;
+
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      // 更新底部加载进度：进度条填充、光点位置与百分比文字同步
+      function unitySetProgress(progress) {
+        var percent = Math.round(progress * 100);
+        progressBarFull.style.width = percent + "%";
+        progressHead.style.left = percent + "%";
+        progressPercent.textContent = percent + "%";
+      }
+
+      // 全屏提示遮罩：加载完成后显示，点击任意位置请求浏览器全屏。
+      // 进入全屏后遮罩隐藏；退出全屏由浏览器原生 ESC 处理，无需额外代码。
+      function showFullscreenHint() {
+        fullscreenHint.classList.add("is-visible");
+      }
+
+      function hideFullscreenHint() {
+        fullscreenHint.classList.remove("is-visible");
+      }
+
+      function requestPageFullscreen() {
+        var target = document.documentElement;
+        var request = target.requestFullscreen
+          || target.webkitRequestFullscreen
+          || target.msRequestFullscreen;
+
+        // 浏览器不支持时直接收起遮罩，避免挡住游戏画面
+        if (!request) {
+          hideFullscreenHint();
+          return;
+        }
+
+        try {
+          var result = request.call(target);
+          if (result && typeof result.then === "function") {
+            result.then(hideFullscreenHint).catch(hideFullscreenHint);
+          } else {
+            hideFullscreenHint();
+          }
+        } catch (e) {
+          hideFullscreenHint();
+        }
+      }
+
+      fullscreenHint.addEventListener("click", requestPageFullscreen);
+
+      // 显式处理 ESC 退出全屏：
+      // 部分浏览器会把 Esc 的默认退出行为交给页面处理（Unity 的键盘输入会 preventDefault），
+      // 导致原生 ESC 不生效；这里在捕获阶段监听并主动退出。
+      function isPageFullscreen() {
+        return !!(document.fullscreenElement
+          || document.webkitFullscreenElement
+          || document.msFullscreenElement);
+      }
+
+      function exitPageFullscreen() {
+        if (!isPageFullscreen()) {
+          return;
+        }
+
+        var exit = document.exitFullscreen
+          || document.webkitExitFullscreen
+          || document.msExitFullscreen;
+
+        if (exit) {
+          exit.call(document);
+        }
+      }
+
+      // 全屏状态变化：进入时收起提示，退出（含 ESC）后重新显示提示
+      function handleFullscreenChanged() {
+        if (isPageFullscreen()) {
+          hideFullscreenHint();
+          return;
+        }
+
+        if (hasLoaded && !isMobile) {
+          showFullscreenHint();
+        }
+      }
+
+      document.addEventListener("fullscreenchange", handleFullscreenChanged);
+      document.addEventListener("webkitfullscreenchange", handleFullscreenChanged);
+      document.addEventListener("MSFullscreenChange", handleFullscreenChanged);
+
+      window.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" || event.key === "Esc" || event.keyCode === 27) {
+          exitPageFullscreen();
+        }
+      }, true);
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/Aerospace.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/Aerospace.data.unityweb",
+        frameworkUrl: buildUrl + "/Aerospace.framework.js.unityweb",
+        codeUrl: buildUrl + "/Aerospace.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "hyf",
+        productName: "航空航天典型零部件电镀工艺虚拟仿真实验",
+        productVersion: "0.1",
+        showBanner: unityShowBanner,
+      };
+
+      // By default, Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        container.className = "unity-mobile";
+        canvas.className = "unity-mobile";
+
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
+
+
+      }
+
+      // Desktop：canvas 尺寸完全交给 CSS（100vw × 100vh 铺满窗口，见 style.css），
+      // 不再写死 WIDTH/HEIGHT 像素，避免 1920×1080 画布在小窗口中被裁切。
+
+      loadingBar.style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          unitySetProgress(progress);
+        }).then((unityInstance) => {
+          // 加载完成后淡出设计稿，露出游戏画面
+          unitySetProgress(1);
+          hasLoaded = true;
+          loadingBar.classList.add("is-done");
+          setTimeout(() => {
+            loadingBar.style.display = "none";
+
+            // 桌面端加载完成后提示进入全屏
+            if (!isMobile) {
+              showFullscreenHint();
+            }
+          }, 450);
+        }).catch((message) => {
+          // 失败时先撤掉加载页，避免错误信息被遮挡
+          loadingBar.style.display = "none";
+          alert(message);
+        });
+      };
+
+      document.body.appendChild(script);
+
+    </script>
+  </body>
+</html>

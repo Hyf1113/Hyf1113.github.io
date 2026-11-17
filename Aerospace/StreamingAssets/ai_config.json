@@ -1,0 +1,11 @@
+{
+  "provider": "dify",
+  "endpoint": "http://localhost/v1",
+  "apiKey": "app-VTFpOLZWgKBZSAD5wnuAZFa4",
+  "model": "问答",
+  "systemPrompt": "",
+  "temperature": 0,
+  "maxTokens": 0,
+  "stream": true,
+  "timeoutSeconds": 360
+}
